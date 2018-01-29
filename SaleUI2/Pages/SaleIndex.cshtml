@@ -3,12 +3,44 @@
 @model SaleUI2.Pages.SaleIndexModel
 @{
     ViewData["Title"] = "SaleIndex";
+
+    List<SelectListItem> branches = new List<SelectListItem>();
+    branches.Add(new SelectListItem()
+    {
+        Text = "Pasig",
+        Value = "Pasig"
+    });
+    branches.Add(new SelectListItem()
+    {
+        Text = "Robinsons Place Manila",
+        Value = "Robinsons_Place_Manila"
+    });
+    branches.Add(new SelectListItem()
+    {
+        Text = "Robinsons Forum",
+        Value = "Robinsons_Forum"
+    });
+    branches.Add(new SelectListItem()
+    {
+        Text = "St. Francis Square",
+        Value = "St._Francis_Square"
+    });
+    branches.Add(new SelectListItem()
+    {
+        Text = "SM Fairview",
+        Value = "SM_Fairview"
+    });
+    branches.Add(new SelectListItem()
+    {
+        Text = "SM Southmall",
+        Value = "SM_Southmall"
+    });
 }
 
 <h2>SaleIndex</h2>
 
 <form method="POST">
-    @if (!String.IsNullOrEmpty(Model.SaleEntry.Id))
+    @if (!String.IsNullOrEmpty(Model.SaleEntry?.Id))
     {
         <div class="row">
             <div class="col-md-4">
@@ -55,7 +87,7 @@
     <div class="row">
         <div class="col-md-4">
             <label asp-for="SaleEntry.Branch"></label>
-            <input asp-for="SaleEntry.Branch" class="form-control"/>
+            @Html.DropDownListFor(m => m.SaleEntry.Branch, branches, new {@class = "form-control"})
             <span class="alert-danger" asp-validation-for="SaleEntry.Branch"></span>
         </div>
     </div>
@@ -81,19 +113,19 @@
         </div>
     </div>
     <br/>
-    
-    
-    
-@if (String.IsNullOrEmpty(Model.SaleEntry.Id))
-{
-    <input type="submit" value="Save" class="btn btn-primary" />
-    <button class="btn btn-danger" href="~/SaleItem">Cancel</button>
-}
-else
-{
-    <button type="submit" class="btn btn-warning" asp-page-handler="update">Update</button>
-    <button class="btn btn-info" href="~/SaleItem">Add New Sale >></button>
-}
+
+
+
+    @if (String.IsNullOrEmpty(Model.SaleEntry?.Id))
+    {
+        <input type="submit" value="Save" class="btn btn-primary"/>
+        <button type="button" class="btn btn-danger" onclick="window.location='/SaleIndex'">Cancel</button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-warning" asp-page-handler="update">Update</button>
+        <button type="button" class="btn btn-info" onclick="window.location='/SaleIndex'">Add New Sale >></button>
+    }
 </form>
 
 

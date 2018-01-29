@@ -26,9 +26,12 @@ namespace SaleUI2.Pages
 
         public async Task OnGet(string id)
         {
-            var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
-            SaleEntries = await GetAsJson<List<SaleEntry>>(uri + "SaleEntry/saleentry/" + id);
-            SaleEntry = SaleEntries.FirstOrDefault();
+            if (!String.IsNullOrEmpty(id))
+            {
+                var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+                SaleEntries = await GetAsJson<List<SaleEntry>>(uri + "SaleEntry/saleentry/" + id);
+                SaleEntry = SaleEntries.FirstOrDefault(); 
+            }
 
         }
 
@@ -50,11 +53,11 @@ namespace SaleUI2.Pages
                 var location = response.Headers.GetValues("location").FirstOrDefault();
                 if (location != null)
                 {
-                    var id = location.Substring(location.LastIndexOf('/') + 1);
-                    return RedirectToPage("/SaleIndex?id=" + id);
+                    var _itemId = location.Substring(location.LastIndexOf('/') + 1);
+                    return RedirectToPage("/SaleIndex",new {id = _itemId });
                 }
 
-                return RedirectToPage("/SaleIndex");
+                return RedirectToPage("/Error");
             }
 
             return RedirectToPage("/Error");
@@ -78,11 +81,11 @@ namespace SaleUI2.Pages
                 var location = response.Headers.GetValues("location").FirstOrDefault();
                 if (location != null)
                 {
-                    var id = location.Substring(location.LastIndexOf('/') + 1);
-                    return RedirectToPage("/SaleIndex?id=" + id);
+                    var _itemId = location.Substring(location.LastIndexOf('/') + 1);
+                    return RedirectToPage("/SaleIndex", new { id = _itemId });
                 }
 
-                return RedirectToPage("/SaleIndex");
+                return RedirectToPage("/Error");
             }
 
             return RedirectToPage("/Error");
