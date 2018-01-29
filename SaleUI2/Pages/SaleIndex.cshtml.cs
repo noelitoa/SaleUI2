@@ -24,9 +24,40 @@ namespace SaleUI2.Pages
             client = GetHttpClient();
         }
 
-        public void OnGet()
+        public async Task OnGet(string id)
         {
+            var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+            SaleEntries = await GetAsJson<List<SaleEntry>>(uri + "SaleEntry/saleentry/" + id);
+            SaleEntry = SaleEntries.FirstOrDefault();
 
+        }
+
+        public async Task<IActionResult> OnPostUpdateAsync(SaleEntry saleEntry)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+            saleEntry.TimeStamp = DateTime.Now;
+
+            var stringContent = new StringContent(JsonConvert.SerializeObject(saleEntry), Encoding.UTF8,
+                "application/json");
+            var response = await client.PutAsync(uri + "saleentry/" + saleEntry.Id, stringContent);
+            if (response.IsSuccessStatusCode)
+            {
+                var location = response.Headers.GetValues("location").FirstOrDefault();
+                if (location != null)
+                {
+                    var id = location.Substring(location.LastIndexOf('/') + 1);
+                    return RedirectToPage("/SaleIndex?id=" + id);
+                }
+
+                return RedirectToPage("/SaleIndex");
+            }
+
+            return RedirectToPage("/Error");
         }
 
         public async Task<IActionResult> OnPostAsync(SaleEntry saleEntry)
@@ -44,6 +75,13 @@ namespace SaleUI2.Pages
             var response = await client.PostAsync(uri + "saleentry", stringContent);
             if (response.IsSuccessStatusCode)
             {
+                var location = response.Headers.GetValues("location").FirstOrDefault();
+                if (location != null)
+                {
+                    var id = location.Substring(location.LastIndexOf('/') + 1);
+                    return RedirectToPage("/SaleIndex?id=" + id);
+                }
+
                 return RedirectToPage("/SaleIndex");
             }
 
@@ -52,6 +90,9 @@ namespace SaleUI2.Pages
 
         [BindProperty]
         public SaleEntry SaleEntry { get; set; }
+
+        [BindProperty]
+        public List<SaleEntry> SaleEntries { get; set; }
 
 
         public HttpClient GetHttpClient()
@@ -62,6 +103,17 @@ namespace SaleUI2.Pages
             }
 
             return client;
+        }
+
+        private async Task<T> GetAsJson<T>(string requestUri)
+        {
+            var jsonResponse = await client.GetAsync(requestUri);
+            
+            using (var content = jsonResponse.Content)
+            {
+                var json = content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<T>(json.Result);
+            }
         }
     }
 }
