@@ -39,6 +39,17 @@
 
 <h2>SaleIndex</h2>
 
+@*<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Menu
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="/SaleIndex">Add New Sale</a>
+        <a class="dropdown-item" href="/Search">Search</a>
+        <a class="dropdown-item" href="http://">Reports</a>
+    </div>
+</div>*@
+
 <form method="POST">
     @if (!String.IsNullOrEmpty(Model.SaleEntry?.Id))
     {
