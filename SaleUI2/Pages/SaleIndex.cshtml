@@ -82,47 +82,46 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-sm-6">
             <label asp-for="SaleEntry.ProductPrice"></label>
             <input asp-for="SaleEntry.ProductPrice" class="form-control"/>
             <span class="alert-danger" asp-validation-for="SaleEntry.ProductPrice"></span>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
+        
+        <div class="col-sm-6">
             <label asp-for="SaleEntry.Quantity"></label>
-            <input asp-for="SaleEntry.Quantity" class="form-control"/>
+            <input asp-for="SaleEntry.Quantity" class="form-control" />
             <span class="alert-danger" asp-validation-for="SaleEntry.ProductSKU"></span>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-sm-6">
             <label asp-for="SaleEntry.Branch"></label>
             @Html.DropDownListFor(m => m.SaleEntry.Branch, branches, new {@class = "form-control"})
             <span class="alert-danger" asp-validation-for="SaleEntry.Branch"></span>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
+        
+        <div class="col-sm-6">
             <label asp-for="SaleEntry.SoldBy"></label>
-            <input asp-for="SaleEntry.SoldBy" class="form-control"/>
+            <input asp-for="SaleEntry.SoldBy" class="form-control" />
             <span class="alert-danger" asp-validation-for="SaleEntry.SoldBy"></span>
         </div>
     </div>
+   
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-sm-6">
             <label asp-for="SaleEntry.SaleDate"></label>
             <input asp-for="SaleEntry.SaleDate" class="form-control"/>
             <span class="alert-danger" asp-validation-for="SaleEntry.SaleDate"></span>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-4">
+        
+        <div class="col-sm-6">
             <label asp-for="SaleEntry.EncodedBy"></label>
-            <input asp-for="SaleEntry.EncodedBy" class="form-control"/>
+            <input asp-for="SaleEntry.EncodedBy" class="form-control" />
             <span class="alert-danger" asp-validation-for="SaleEntry.EncodedBy"></span>
         </div>
     </div>
+    
     <br/>
 
 
