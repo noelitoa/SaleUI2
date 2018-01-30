@@ -1,0 +1,75 @@
+﻿@page
+@model SaleUI2.Pages.SaleIndexModel
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@if (Model.allEntries.SaleEntryGets != null)
+{
+
+
+<table class="table">  
+<thead>  
+<tr>  
+    <th>  
+        @Html.DisplayName("Id")  
+    </th>  
+    <th>  
+        @Html.DisplayName("SKU")  
+    </th>  
+    <th>  
+        @Html.DisplayName("Branch")  
+    </th>  
+    <th>  
+        @Html.DisplayName("Quantity")  
+    </th>
+    <th>
+        @Html.DisplayName("Amount")
+    </th> 
+    <th>  
+        @Html.DisplayName("SaleDate")  
+    </th>
+    <th>
+        @Html.DisplayName("EntryDate")
+    </th>  
+    <th>Edit | Delete</th>  
+</tr>  
+</thead>  
+    <tbody>
+    @foreach (var entry in Model.allEntries.SaleEntryGets)
+    {
+        <tr>  
+            <td>  
+                @Html.DisplayFor(modelItem => entry.Id)  
+            </td>  
+            <td>  
+                @Html.DisplayFor(modelItem => entry.ProductSKU)  
+            </td>  
+            <td>  
+                @Html.DisplayFor(modelItem => entry.Branch)  
+            </td>  
+            <td>  
+                @Html.DisplayFor(modelItem => entry.Quantity)  
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => entry.ProductPrice)
+            </td> 
+            <td>  
+                @Html.DisplayFor(modelItem => entry.SaleDate)  
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => entry.TimeStamp)
+            </td> 
+            <td>  
+                <a asp-page="./SaleIndex" asp-route-id="@entry.Id">Edit</a> |  
+                <a asp-page="./Delete" onclick="return confirm('Are you sure you want to delete this item?');" asp-page-handler="Delete" asp-route-id="@entry.Id">Delete</a>  
+            </td>  
+        </tr>  
+    }
+    </tbody>  
+</table> 
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

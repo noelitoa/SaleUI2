@@ -17,11 +17,19 @@ namespace SaleUI2.Pages
         private static HttpClient client;
         private IConfiguration _configuration;
 
+        [BindProperty] public SaleEntry SaleEntry { get; set; }
+
+        [BindProperty] public List<SaleEntry> SaleEntries { get; set; }
+
+        [BindProperty] public SaleEntryGet allEntries { get; set; }
+
         public SaleIndexModel(IConfiguration configuration)
         {
             _configuration = configuration;
 
             client = GetHttpClient();
+
+            SetAllEntries(5);
         }
 
         public async Task OnGet(string id)
@@ -30,8 +38,15 @@ namespace SaleUI2.Pages
             {
                 var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
                 SaleEntries = await GetAsJson<List<SaleEntry>>(uri + "SaleEntry/saleentry/" + id);
-                SaleEntry = SaleEntries.FirstOrDefault(); 
+                SaleEntry = SaleEntries.FirstOrDefault();
             }
+
+        }
+
+        public async void SetAllEntries(int size)
+        {
+            var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+            allEntries = await GetAsJson<SaleEntryGet>(uri + "SaleEntry/all/0/" + size +"/time");
 
         }
 
@@ -91,11 +106,7 @@ namespace SaleUI2.Pages
             return RedirectToPage("/Error");
         }
 
-        [BindProperty]
-        public SaleEntry SaleEntry { get; set; }
-
-        [BindProperty]
-        public List<SaleEntry> SaleEntries { get; set; }
+        
 
 
         public HttpClient GetHttpClient()
