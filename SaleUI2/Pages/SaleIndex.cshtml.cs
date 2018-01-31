@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace SaleUI2.Pages
 
         [BindProperty] public List<SaleEntry> SaleEntries { get; set; }
 
-        [BindProperty] public SaleEntryGet allEntries { get; set; }
+        public SaleEntryGet AllEntries { get; set; }
 
         public SaleIndexModel(IConfiguration configuration)
         {
@@ -46,7 +47,7 @@ namespace SaleUI2.Pages
         public async void SetAllEntries(int size)
         {
             var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
-            allEntries = await GetAsJson<SaleEntryGet>(uri + "SaleEntry/all/0/" + size +"/time");
+            AllEntries = await GetAsJson<SaleEntryGet>(uri + "SaleEntry/all/0/" + size +"/time");
 
         }
 
@@ -106,7 +107,22 @@ namespace SaleUI2.Pages
             return RedirectToPage("/Error");
         }
 
-        
+        public async Task<IActionResult> OnGetDelete(string id)
+        {
+            if (!String.IsNullOrEmpty(id))
+            {
+                var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+                var response = await DeleteAsString(uri + "SaleEntry/" + id);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    var itemId = id;
+                    return RedirectToPage("/SaleIndex");
+                }
+            }
+
+            return RedirectToPage("/Error");
+        }
 
 
         public HttpClient GetHttpClient()
@@ -128,6 +144,24 @@ namespace SaleUI2.Pages
                 var json = content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<T>(json.Result);
             }
+        }
+
+        private async Task<T> DeleteAsJson<T>(string requestUri)
+        {
+            var jsonResponse = await client.DeleteAsync(requestUri);
+
+            using (var content = jsonResponse.Content)
+            {
+                var json = content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<T>(json.Result);
+            }
+        }
+
+        private async Task<HttpResponseMessage> DeleteAsString(string requestUri)
+        {
+            var jsonResponse = await client.DeleteAsync(requestUri);
+
+            return jsonResponse;
         }
     }
 }
