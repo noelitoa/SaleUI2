@@ -1,0 +1,15 @@
+﻿@page
+@model SaleUI2.Pages.DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>Dashboard</h2>
+
+@Html.Partial("_AllSales", Model.AllEntries)
+
+@*@{ await Html.RenderPartialAsync("_AllSales", Model.AllEntries);}*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

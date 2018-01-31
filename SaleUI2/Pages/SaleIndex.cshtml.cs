@@ -44,10 +44,11 @@ namespace SaleUI2.Pages
 
         }
 
-        public async void SetAllEntries(int size)
+        public void SetAllEntries(int size)
         {
+            AllEntries = new SaleEntryGet() { SaleEntryGets = new List<SaleEntry>() };
             var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
-            AllEntries = await GetAsJson<SaleEntryGet>(uri + "SaleEntry/all/0/" + size +"/time");
+            AllEntries = GetAsJsonSync<SaleEntryGet>(uri + "SaleEntry/all/0/" + size +"/time");
 
         }
 
@@ -144,6 +145,23 @@ namespace SaleUI2.Pages
                 var json = content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<T>(json.Result);
             }
+        }
+
+        private T GetAsJsonSync<T>(string requestUri)
+        {
+            var response = client.GetAsync(requestUri).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = response.Content;
+
+                // by calling .Result you are synchronously reading the result
+                var responseString = responseContent.ReadAsStringAsync().Result;
+
+                return JsonConvert.DeserializeObject<T>(responseString);
+            }
+
+            return default(T);
         }
 
         private async Task<T> DeleteAsJson<T>(string requestUri)

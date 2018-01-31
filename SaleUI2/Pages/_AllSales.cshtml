@@ -1,14 +1,14 @@
 ﻿
 @using SaleUI2.Models
-@model SaleUI2.Pages.SaleIndexModel
+@model SaleUI2.Models.SaleEntryGet
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
 
-@if (Model.AllEntries.SaleEntryGets.Any())
+@if (Model.SaleEntryGets.Any())
 {
-    <h3>Last @Model.AllEntries.Count entries</h3>
+    <h3>Last @Model.Count entries</h3>
     <div class="table-responsive">
         <table class="table table-condensed">
             <thead>
@@ -38,7 +38,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var entry in Model.AllEntries.SaleEntryGets)
+                @foreach (var entry in Model.SaleEntryGets)
                 {
                     <tr>
                         <td>
