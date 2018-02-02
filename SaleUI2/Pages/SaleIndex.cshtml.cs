@@ -44,6 +44,17 @@ namespace SaleUI2.Pages
 
         }
 
+        public async Task OnPostSearch(string id)
+        {
+            if (!String.IsNullOrEmpty(id))
+            {
+                var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+                SaleEntries = await GetAsJson<List<SaleEntry>>(uri + "SaleEntry/saleentry/" + id);
+                SaleEntry = SaleEntries.FirstOrDefault();
+            }
+
+        }
+
         public void SetAllEntries(int size)
         {
             AllEntries = new SaleEntryGet() { SaleEntryGets = new List<SaleEntry>() };
