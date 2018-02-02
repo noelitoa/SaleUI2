@@ -125,6 +125,23 @@ namespace SaleUI2.Pages
             return RedirectToPage("/Error");
         }
 
+        public async Task<IActionResult> OnPostDelete(string id)
+        {
+            if (!String.IsNullOrEmpty(id))
+            {
+                var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+                var response = await DeleteAsString(uri + "SaleEntry/" + id);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    var itemId = id;
+                    return RedirectToPage("/SaleIndex");
+                }
+            }
+
+            return RedirectToPage("/Error");
+        }
+
 
         public HttpClient GetHttpClient()
         {

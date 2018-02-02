@@ -39,6 +39,8 @@ namespace SaleUI2
                     options.Conventions.AuthorizeFolder("/Account/Manage");
                     options.Conventions.AuthorizePage("/Account/Logout");
                     options.Conventions.AuthorizePage("/SaleIndex");
+                    options.Conventions.AuthorizePage("/Dashboard");
+                    options.Conventions.AuthorizePage("/Search");
                 });
 
             // Register no-op EmailSender used by account confirmation and password reset during development
