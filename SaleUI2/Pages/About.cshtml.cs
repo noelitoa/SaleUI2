@@ -12,7 +12,7 @@ namespace SaleUI2.Pages
 
         public void OnGet()
         {
-            Message = "Your application description page.";
+            Message = "Sale UI for sale entries.";
         }
     }
 }

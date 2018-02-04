@@ -70,7 +70,7 @@ namespace SaleUI2
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    template: "{controller}/{action=SaleIndex}/{id?}");
             });
         }
     }
