@@ -39,6 +39,7 @@ namespace SaleUI2
                     options.Conventions.AuthorizeFolder("/Account/Manage");
                     options.Conventions.AuthorizePage("/Account/Logout");
                     options.Conventions.AuthorizePage("/SaleIndex");
+                    options.Conventions.AuthorizePage("/ProductIndex");
                     options.Conventions.AuthorizePage("/Dashboard");
                     options.Conventions.AuthorizePage("/Search");
                 });

@@ -1,0 +1,22 @@
+﻿@page
+@model SaleUI2.Pages.ProductIndexModel
+@{
+    ViewData["Title"] = "ProductIndex";
+}
+
+<h2>ProductIndex</h2>
+
+@if (Model.Products?.Any() == true)
+{
+    @Html.Partial("_AllProducts", Model)
+}
+else if (Model.Product != null)
+{
+    @Html.Partial("_Product", Model)
+}
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
