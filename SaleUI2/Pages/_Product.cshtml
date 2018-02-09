@@ -40,6 +40,13 @@
             <span class="alert-danger" asp-validation-for="Product.DateCreated"></span>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label asp-for="Product.EncodedBy"></label>
+            <input asp-for="Product.EncodedBy" class="form-control" />
+            <span class="alert-danger" asp-validation-for="Product.EncodedBy"></span>
+        </div>
+    </div>
     <br>
 
     @if (String.IsNullOrEmpty(Model.Product?.Id))
