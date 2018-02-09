@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using Newtonsoft.Json;
 using SaleUI2.Models;
+using X.PagedList;
 
 namespace SaleUI2.Pages
 {
@@ -16,11 +17,14 @@ namespace SaleUI2.Pages
         private static HttpClient client;
         private IConfiguration _configuration;
 
-        [BindProperty]
-        public Product Product { get; set; }
+        private const int DefaultPageSize = 20;
 
         [BindProperty]
+        public Product Product { get; set; }
+        [BindProperty]
         public List<Product> Products { get; set; }
+        [BindProperty]
+        public IPagedList<Product> PageProducts { get; set; }
 
         public ProductIndexModel(IConfiguration configuration)
         {
@@ -28,7 +32,7 @@ namespace SaleUI2.Pages
 
             client = GetHttpClient();
         }
-
+        
         public void OnGet(string id)
         {
             if (!String.IsNullOrEmpty(id))
@@ -41,7 +45,16 @@ namespace SaleUI2.Pages
             {
                 var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
                 Products = GetAsJsonSync<List<Product>>(uri + "Product/all/0/999/productSKU.keyword/0");
+                PageProducts = Products.ToPagedList(1, DefaultPageSize);
             }
+        }
+        
+        public void OnGetPaging(int id)
+        {
+                var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+                Products = GetAsJsonSync<List<Product>>(uri + "Product/all/0/999/productSKU.keyword/0");
+                PageProducts = Products.ToPagedList(id, DefaultPageSize);
+            
         }
 
 

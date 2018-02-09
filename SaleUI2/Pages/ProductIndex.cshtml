@@ -8,7 +8,8 @@
 
 @if (Model.Products?.Any() == true)
 {
-    @Html.Partial("_AllProducts", Model)
+    @*@Html.Partial("_AllProducts", Model)*@
+    @Html.Partial("_AllProductsPaged", Model)
 }
 else if (Model.Product != null)
 {
