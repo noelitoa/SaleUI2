@@ -97,6 +97,15 @@ namespace SaleUI2.Pages
             
         }
 
+        public void OnGetSearchAsync(string q)
+        {
+            var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+
+            Products = GetAsJsonSync<List<Product>>(uri + "Product/search/" + q + "/_id/0");
+            PageProducts = Products.ToPagedList(1, DefaultPageSize);
+
+        }
+
         // http://localhost:1636/api/Product/search/asdf/_id/0
 
         public async Task<IActionResult> OnGetDelete(string id)

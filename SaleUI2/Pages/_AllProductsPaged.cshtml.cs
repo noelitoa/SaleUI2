@@ -9,6 +9,9 @@ namespace SaleUI2.Pages
 {
     public class _AllProductsPagedModel : PageModel
     {
+
+
+
         public void OnGet()
         {
 

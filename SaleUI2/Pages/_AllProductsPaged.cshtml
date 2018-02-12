@@ -1,12 +1,12 @@
 ﻿@using X.PagedList.Mvc;
 @using X.PagedList;
 @using X.PagedList.Mvc.Core
-@model SaleUI2.Pages.ProductIndexModel
+@model IPagedList<Models.Product>
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
-@if (Model.Products.Any())
+@if (Model.Any())
 {
     <h3>Products</h3>
     <div class="table-responsive">
@@ -27,7 +27,7 @@
 
             </thead>
 
-            @foreach (var product in Model.PageProducts)
+            @foreach (var product in Model)
             {
                 <tr>
                     <td>
@@ -49,5 +49,5 @@
         </table>
 
     </div>
-    @Html.PagedListPager((IPagedList)Model.PageProducts, page => "ProductIndex?handler=paging&id="+ page)
+    @Html.PagedListPager((IPagedList)Model, page => "ProductIndex?handler=paging&id="+ page)
 }
