@@ -92,7 +92,7 @@ namespace SaleUI2.Pages
         {
             var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
 
-            Products = GetAsJsonSync<List<Product>>(uri + "Product/search/"+ query + "/_id/0");
+            Products = GetAsJsonSync<List<Product>>(uri + "Product/search/"+ query + "/productSKU.keyword/0");
             PageProducts = Products.ToPagedList(1, DefaultPageSize);
             
         }
@@ -101,7 +101,7 @@ namespace SaleUI2.Pages
         {
             var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
 
-            Products = GetAsJsonSync<List<Product>>(uri + "Product/search/" + q + "/_id/0");
+            Products = GetAsJsonSync<List<Product>>(uri + "Product/search/" + q + "/productSKU.keyword/0");
             PageProducts = Products.ToPagedList(1, DefaultPageSize);
 
         }
