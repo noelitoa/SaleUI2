@@ -37,21 +37,18 @@
     });
 
 
-    
+
 }
 
 <h2>SaleUI</h2>
 
-@*<div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Menu
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="/SaleIndex">Add New Sale</a>
-        <a class="dropdown-item" href="/Search">Search</a>
-        <a class="dropdown-item" href="http://">Reports</a>
+@if (!String.IsNullOrEmpty(Model.ConfirmMessage))
+{
+    <br />
+    <div class="alert alert-success" role="alert">
+        @Model.ConfirmMessage
     </div>
-</div>*@
+}
 
 <form method="POST">
     @if (!String.IsNullOrEmpty(Model.SaleEntry?.Id))
@@ -59,38 +56,38 @@
         <div class="row">
             <div class="col-md-4">
                 <label asp-for="SaleEntry.Id"></label>
-                <input readonly asp-for="SaleEntry.Id" class="form-control"/>
+                <input readonly asp-for="SaleEntry.Id" class="form-control" />
             </div>
         </div>
     }
     <div class="row">
         <div class="col-md-4">
             <label asp-for="SaleEntry.ProductSKU"></label>
-            <input asp-for="SaleEntry.ProductSKU" class="form-control"/>
+            <input asp-for="SaleEntry.ProductSKU" class="form-control" />
             <span class="alert-danger" asp-validation-for="SaleEntry.ProductSKU"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-md-4">
             <label asp-for="SaleEntry.ProductName"></label>
-            <input asp-for="SaleEntry.ProductName" class="form-control"/>
+            <input asp-for="SaleEntry.ProductName" class="form-control" />
             <span class="alert-danger" asp-validation-for="SaleEntry.ProductName"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-md-4">
             <label asp-for="SaleEntry.ProductDescription"></label>
-            <input asp-for="SaleEntry.ProductDescription" class="form-control"/>
+            <input asp-for="SaleEntry.ProductDescription" class="form-control" />
             <span class="alert-danger" asp-validation-for="SaleEntry.ProductSKU"></span>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6">
             <label asp-for="SaleEntry.ProductPrice"></label>
-            <input asp-for="SaleEntry.ProductPrice" class="form-control"/>
+            <input asp-for="SaleEntry.ProductPrice" class="form-control" />
             <span class="alert-danger" asp-validation-for="SaleEntry.ProductPrice"></span>
         </div>
-        
+
         <div class="col-sm-6">
             <label asp-for="SaleEntry.Quantity"></label>
             <input asp-for="SaleEntry.Quantity" class="form-control" />
@@ -100,38 +97,38 @@
     <div class="row">
         <div class="col-sm-6">
             <label asp-for="SaleEntry.Branch"></label>
-            @Html.DropDownListFor(m => m.SaleEntry.Branch, branches, new {@class = "form-control"})
+            @Html.DropDownListFor(m => m.SaleEntry.Branch, branches, new { @class = "form-control" })
             <span class="alert-danger" asp-validation-for="SaleEntry.Branch"></span>
         </div>
-        
+
         <div class="col-sm-6">
             <label asp-for="SaleEntry.SoldBy"></label>
             <input asp-for="SaleEntry.SoldBy" class="form-control" />
             <span class="alert-danger" asp-validation-for="SaleEntry.SoldBy"></span>
         </div>
     </div>
-   
+
     <div class="row">
         <div class="col-sm-6">
             <label asp-for="SaleEntry.SaleDate"></label>
-            <input asp-for="SaleEntry.SaleDate" class="form-control"/>
+            <input asp-for="SaleEntry.SaleDate" class="form-control" />
             <span class="alert-danger" asp-validation-for="SaleEntry.SaleDate"></span>
         </div>
-        
+
         <div class="col-sm-6">
             <label asp-for="SaleEntry.EncodedBy"></label>
             <input asp-for="SaleEntry.EncodedBy" class="form-control" />
             <span class="alert-danger" asp-validation-for="SaleEntry.EncodedBy"></span>
         </div>
     </div>
-    
-    <br/>
+
+    <br />
 
 
 
     @if (String.IsNullOrEmpty(Model.SaleEntry?.Id))
     {
-        <input type="submit" value="Save" class="btn btn-primary"/>
+        <input type="submit" value="Save" class="btn btn-primary" />
         <button type="button" class="btn btn-danger" onclick="window.location='./SaleIndex'">Cancel</button>
     }
     else
@@ -144,11 +141,11 @@
     }
 </form>
 
-<br/>
+<br />
 
 @Html.Partial("_AllSales", Model.AllEntries)
 
 
-        @section Scripts {
-            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

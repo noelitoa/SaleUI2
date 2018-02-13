@@ -22,6 +22,8 @@ namespace SaleUI2.Pages
 
         [BindProperty] public List<SaleEntry> SaleEntries { get; set; }
 
+        [BindProperty] public string ConfirmMessage { get; set; }
+
         public SaleEntryGet AllEntries { get; set; }
 
         public SaleIndexModel(IConfiguration configuration)
@@ -33,13 +35,18 @@ namespace SaleUI2.Pages
             SetAllEntries(5);
         }
 
-        public async Task OnGet(string id)
+        public async Task OnGet(string id, string confirm)
         {
             if (!String.IsNullOrEmpty(id))
             {
                 var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
                 SaleEntries = await GetAsJson<List<SaleEntry>>(uri + "SaleEntry/saleentry/" + id);
                 SaleEntry = SaleEntries.FirstOrDefault();
+
+                if (!String.IsNullOrEmpty(confirm) && confirm == "ok")
+                {
+                    ConfirmMessage = $"Update successful to id = {id}.";
+                }
             }
 
         }
@@ -82,7 +89,7 @@ namespace SaleUI2.Pages
                 if (location != null)
                 {
                     var _itemId = location.Substring(location.LastIndexOf('/') + 1);
-                    return RedirectToPage("/SaleIndex",new {id = _itemId });
+                    return RedirectToPage("/SaleIndex",new {id = _itemId, confirm = "ok"});
                 }
 
                 return RedirectToPage("/Error");
