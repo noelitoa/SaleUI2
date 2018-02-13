@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
 using SaleUI2.Models;
+using SaleUI2.Pages.Account;
 using X.PagedList;
 
 namespace SaleUI2.Pages
@@ -23,10 +24,13 @@ namespace SaleUI2.Pages
 
         [BindProperty]
         public Product Product { get; set; }
+        [BindProperty]
+        public string ConfirmMessage { get; set; }
 
         public List<Product> Products { get; set; }
-
         public IPagedList<Product> PageProducts { get; set; }
+
+        
 
         public ProductIndexModel(IConfiguration configuration)
         {
@@ -35,13 +39,18 @@ namespace SaleUI2.Pages
             client = GetHttpClient();
         }
         
-        public void OnGet(string id)
+        public void OnGet(string id, string confirm)
         {
             if (!String.IsNullOrEmpty(id))
             {
                 var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
                 var products = GetAsJsonSync<List<Product>>(uri + "Product/product/" + id);
                 Product = products.FirstOrDefault();
+
+                if (!String.IsNullOrEmpty(confirm) && confirm == "ok")
+                {
+                    ConfirmMessage = $"Update successful to id = {id}.";
+                }
             }
             else
             {
@@ -79,7 +88,7 @@ namespace SaleUI2.Pages
                 if (location != null)
                 {
                     var _itemId = location.Substring(location.LastIndexOf('/') + 1);
-                    return RedirectToPage("/ProductIndex", new { id = _itemId });
+                    return RedirectToPage("/ProductIndex", new { id = _itemId, confirm = "ok" });
                 }
 
                 return RedirectToPage("/Error");
