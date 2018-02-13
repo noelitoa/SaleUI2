@@ -23,9 +23,9 @@ namespace SaleUI2.Pages
 
         [BindProperty]
         public Product Product { get; set; }
-        [BindProperty]
+
         public List<Product> Products { get; set; }
-        [BindProperty]
+
         public IPagedList<Product> PageProducts { get; set; }
 
         public ProductIndexModel(IConfiguration configuration)

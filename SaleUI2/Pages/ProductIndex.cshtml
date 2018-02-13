@@ -14,14 +14,14 @@
 </div>
 <br>
 
-@if (Model.Products?.Any() == true)
+@if (Model.PageProducts?.Any() == true)
 {
     @*@Html.Partial("_AllProducts", Model)*@
     @Html.Partial("_AllProductsPaged", Model.PageProducts)
 }
 else if (Model.Product != null)
 {
-    @Html.Partial("_Product", Model)
+    @Html.Partial("_Product", Model.Product)
 }
 
 
