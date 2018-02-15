@@ -1,10 +1,11 @@
 ﻿@page
-@model SaleUI2.Pages.ProductIndexModel
+@model SaleUI2.Pages.InventoryIndexModel
 @{
-    ViewData["Title"] = "Products";
+    ViewData["Title"] = "Inventory";
 }
-<br/>
-<br/>
+
+<br />
+<br />
 <div class="col-lg-6">
     <div class="input-group">
         <input type="text" name="q" id="q" class="form-control" placeholder="Search for product...">
@@ -13,28 +14,24 @@
         </span>
     </div>
 </div>
-<br/>
+<br />
 
 @if (!String.IsNullOrEmpty(Model.ConfirmMessage))
 {
-    <br/>
+    <br />
     <div class="alert alert-success" role="alert">
         @Model.ConfirmMessage
     </div>
 }
 
-@if (Model.PageProducts?.Any() == true)
+@if (Model.PageInventories?.Any() == true)
 {
     @*@Html.Partial("_AllProducts", Model)*@
-    @Html.Partial("_AllProductsPaged", Model.PageProducts)
+    @Html.Partial("_AllInventoryPaged", Model.PageInventories)
 }
-else if (Model.Product != null)
+else if (Model.Inventory != null)
 {
-    @Html.Partial("_Product", Model.Product)
+    @Html.Partial("_Inventory", Model.Inventory)
 }
 
 
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

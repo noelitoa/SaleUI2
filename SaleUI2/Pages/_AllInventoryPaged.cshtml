@@ -1,0 +1,57 @@
+﻿
+@using X.PagedList.Mvc;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<Models.Inventory>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@if (Model.Any())
+{
+    <br>
+    <h3>@Model.TotalItemCount Products</h3>
+    <div class="table-responsive">
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th>
+                    @Html.DisplayName("SKU")
+                </th>
+                <th>
+                    @Html.DisplayName("Name")
+                </th>
+                <th>
+                    @Html.DisplayName("Quantity")
+                </th>
+                <th>Edit | Delete</th>
+            </tr>
+
+            </thead>
+
+            @foreach (var inventory in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => inventory.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => inventory.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => inventory.Quantity)
+                    </td>
+                    <td>
+                        <a asp-page="./InventoryIndex" asp-route-id="@inventory.Id">Edit</a> |
+                        <a asp-page="./InventoryIndex" onclick="return confirm('Are you sure you want to delete this item?');" asp-page-handler="Delete" asp-route-id="@inventory.Id">Delete</a>
+                    </td>
+                </tr>
+
+            }
+        </table>
+
+    </div>
+    @Html.PagedListPager((IPagedList)Model, page => "InventoryIndex?handler=paging&id=" + page)
+}
