@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -65,6 +67,88 @@ namespace SaleUI2.Pages
             Inventories = GetAsJsonSync<List<Inventory>>(uri + "Inventory/all/0/999/productSKU.keyword/0");
             PageInventories = Inventories.ToPagedList(id, DefaultPageSize);
 
+        }
+
+
+        public async Task<IActionResult> OnPostUpdateAsync(Inventory inventory)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+
+            var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+            inventory.TimeStamp = DateTime.UtcNow;
+
+            var stringContent = new StringContent(JsonConvert.SerializeObject(inventory), Encoding.UTF8,
+                "application/json");
+            var response = await client.PutAsync(uri + "inventory/" + inventory.Id, stringContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var location = response.Headers.GetValues("location").FirstOrDefault();
+                if (location != null)
+                {
+                    var _itemId = location.Substring(location.LastIndexOf('/') + 1);
+                    return RedirectToPage("/InventoryIndex", new { id = _itemId, confirm = "ok" });
+                }
+
+                return RedirectToPage("/Error");
+            }
+
+            return RedirectToPage("/Error");
+        }
+
+        public void OnPostSearchAsync(string query)
+        {
+            var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+
+            Inventories = GetAsJsonSync<List<Inventory>>(uri + "Inventory/search/" + query + "/productSKU.keyword/0");
+            PageInventories = Inventories.ToPagedList(1, DefaultPageSize);
+
+        }
+
+        public void OnGetSearchAsync(string q)
+        {
+            var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+
+            Inventories = GetAsJsonSync<List<Inventory>>(uri + "Inventory/search/" + q + "/productSKU.keyword/0");
+            PageInventories = Inventories.ToPagedList(1, DefaultPageSize);
+
+        }
+
+        public async Task<IActionResult> OnGetDelete(string id)
+        {
+            if (!String.IsNullOrEmpty(id))
+            {
+                var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+                var response = await DeleteAsString(uri + "inventory/" + id);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    var itemId = id;
+                    return RedirectToPage("/InventoryIndex");
+                }
+            }
+
+            return RedirectToPage("/Error");
+        }
+
+        public async Task<IActionResult> OnPostDelete(string id)
+        {
+            if (!String.IsNullOrEmpty(id))
+            {
+                var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+                var response = await DeleteAsString(uri + "inventory/" + id);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    var itemId = id;
+                    return RedirectToPage("/InventoryIndex");
+                }
+            }
+
+            return RedirectToPage("/Error");
         }
 
         #region Private
