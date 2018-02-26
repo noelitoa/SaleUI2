@@ -56,7 +56,7 @@ namespace SaleUI2.Pages
             else
             {
                 var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
-                Inventories = GetAsJsonSync<List<Inventory>>(uri + "Inventory/all/0/999/productSKU.keyword/0");
+                Inventories = GetAsJsonSync<List<Inventory>>(uri + "Inventory/all/0/9999/quantity/0");
                 PageInventories = Inventories.ToPagedList(1, DefaultPageSize);
             }
         }
@@ -64,7 +64,7 @@ namespace SaleUI2.Pages
         public void OnGetPaging(int id)
         {
             var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
-            Inventories = GetAsJsonSync<List<Inventory>>(uri + "Inventory/all/0/999/productSKU.keyword/0");
+            Inventories = GetAsJsonSync<List<Inventory>>(uri + "Inventory/all/0/9999/quantity/0");
             PageInventories = Inventories.ToPagedList(id, DefaultPageSize);
 
         }
