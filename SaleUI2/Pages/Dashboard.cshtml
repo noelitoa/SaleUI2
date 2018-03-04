@@ -8,6 +8,10 @@
 
 @Html.Partial("_AllSales", Model.AllEntries)
 
+<br>
+<h3>Last 30 Days - Top Lazada SKUs</h3>
+<iframe src="http://saleui.com:5601/app/kibana#/visualize/edit/3707b850-0a7e-11e8-8dd1-2fb3f679ea6e?embed=true&_g=(refreshInterval%3A(display%3AOff%2Cpause%3A!f%2Cvalue%3A0)%2Ctime%3A(from%3Anow-30d%2Cmode%3Aquick%2Cto%3Anow))" height="600" width="800"></iframe>
+
 @*@{ await Html.RenderPartialAsync("_AllSales", Model.AllEntries);}*@
 
 @section Scripts {
