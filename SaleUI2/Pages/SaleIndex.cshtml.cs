@@ -26,21 +26,33 @@ namespace SaleUI2.Pages
 
         public SaleEntryGet AllEntries { get; set; }
 
+        [BindProperty] public string UriEs { get; set; }
+
         public SaleIndexModel(IConfiguration configuration)
         {
             _configuration = configuration;
+            UriEs = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
 
             client = GetHttpClient();
 
             SetAllEntries(5);
+
+            
         }
 
         public async Task OnGet(string id, string confirm)
         {
-            if (!String.IsNullOrEmpty(id))
+            if (String.IsNullOrEmpty(id))
             {
-                var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
-                SaleEntries = await GetAsJson<List<SaleEntry>>(uri + "SaleEntry/saleentry/" + id);
+                if (SaleEntry == null)
+                {
+                    SaleEntry = new SaleEntry() { SaleDate = DateTime.Now};
+                }
+            }
+            else
+            {
+                //var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+                SaleEntries = await GetAsJson<List<SaleEntry>>(UriEs + "SaleEntry/saleentry/" + id);
                 SaleEntry = SaleEntries.FirstOrDefault();
 
                 if (!String.IsNullOrEmpty(confirm) && confirm == "ok")
@@ -55,8 +67,8 @@ namespace SaleUI2.Pages
         {
             if (!String.IsNullOrEmpty(id))
             {
-                var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
-                SaleEntries = await GetAsJson<List<SaleEntry>>(uri + "SaleEntry/saleentry/" + id);
+                //var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+                SaleEntries = await GetAsJson<List<SaleEntry>>(UriEs + "SaleEntry/saleentry/" + id);
                 SaleEntry = SaleEntries.FirstOrDefault();
             }
 
@@ -65,8 +77,8 @@ namespace SaleUI2.Pages
         public void SetAllEntries(int size)
         {
             AllEntries = new SaleEntryGet() { SaleEntryGets = new List<SaleEntry>() };
-            var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
-            AllEntries = GetAsJsonSync<SaleEntryGet>(uri + "SaleEntry/all/0/" + size +"/time");
+            //var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+            AllEntries = GetAsJsonSync<SaleEntryGet>(UriEs + "SaleEntry/all/0/" + size +"/time");
 
         }
 
@@ -77,12 +89,12 @@ namespace SaleUI2.Pages
                 return Page();
             }
 
-            var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+            //var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
             saleEntry.TimeStamp = DateTime.Now;
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(saleEntry), Encoding.UTF8,
                 "application/json");
-            var response = await client.PutAsync(uri + "saleentry/" + saleEntry.Id, stringContent);
+            var response = await client.PutAsync(UriEs + "saleentry/" + saleEntry.Id, stringContent);
             if (response.IsSuccessStatusCode)
             {
                 var location = response.Headers.GetValues("location").FirstOrDefault();
@@ -105,12 +117,12 @@ namespace SaleUI2.Pages
                 return Page();
             }
 
-            var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
-            saleEntry.TimeStamp = DateTime.Now;
+            //var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+            //saleEntry.TimeStamp = DateTime.Now;
 
             var stringContent = new StringContent(JsonConvert.SerializeObject(saleEntry), Encoding.UTF8,
                 "application/json");
-            var response = await client.PostAsync(uri + "saleentry", stringContent);
+            var response = await client.PostAsync(UriEs + "saleentry", stringContent);
             if (response.IsSuccessStatusCode)
             {
                 var location = response.Headers.GetValues("location").FirstOrDefault();
@@ -130,8 +142,8 @@ namespace SaleUI2.Pages
         {
             if (!String.IsNullOrEmpty(id))
             {
-                var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
-                var response = await DeleteAsString(uri + "SaleEntry/" + id);
+                //var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+                var response = await DeleteAsString(UriEs + "SaleEntry/" + id);
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
@@ -147,8 +159,8 @@ namespace SaleUI2.Pages
         {
             if (!String.IsNullOrEmpty(id))
             {
-                var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
-                var response = await DeleteAsString(uri + "SaleEntry/" + id);
+                //var uri = _configuration.GetSection("SaleEsApi").GetSection("Uri").Value;
+                var response = await DeleteAsString(UriEs + "SaleEntry/" + id);
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {

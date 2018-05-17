@@ -37,7 +37,7 @@
     });
 
 
-
+    
 }
 
 <h2>SaleUI</h2>
@@ -145,6 +145,18 @@
 
 @Html.Partial("_AllSales", Model.AllEntries)
 
+
+<script>
+    $(document).ready(function(){
+        $(function(){
+            $.getJSON("@(Model.UriEs)Product/allsku/0/999/productSKU.keyword/0", function(data) {
+                $( "#SaleEntry_ProductSKU" ).autocomplete({
+                    source: data    
+                });
+            });
+        });
+    });
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
